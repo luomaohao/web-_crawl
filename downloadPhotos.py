@@ -23,17 +23,24 @@ def scrapy_photo(url,file_name):
     except:
         print("error")
         
-# get a html page
-html = gettext('http://www.ugirls.com/Models/',kv = {'user-agent':'Mozilla/5.0'})
-soup = BeautifulSoup(html, 'lxml')
-a = soup.find_all('img')
-link = []
-#get all links 
-for i in a:
-   link.append(i.attrs['src'])
+#get all of links in a html page
+def get_img_url(w_url):
+    html = gettext(w_url,kv = {'user-agent':'Mozilla/5.0'})
+    soup = BeautifulSoup(html, 'lxml')
+    a = soup.find_all('img')
+    link = []
+    #get all links 
+    for i in a:
+        link.append(i.attrs['src'])
+    return link
+def main():
+    n = 1
+    url = input("please input a url of web:")
+    url_link = get_img_url(url)
+    for i in url_link:
+        file_name = "pic{}.jfif".format(i)
+        scrapy_photo(i,file_name)
+        n = n + 1
 
-i = 1
-for url in link:
-    file_name = "pic{}.jfif".format(i)# name photos
-    scrapy_photo(url,file_name)
-    i = i + 1
+if __name__ == "__main__":
+    main()
